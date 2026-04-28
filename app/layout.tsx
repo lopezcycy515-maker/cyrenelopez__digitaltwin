@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Arjay Pamittan - Full-Stack Developer',
-  description: 'Professional portfolio of Arjay Pamittan, a full-stack developer specializing in React, Next.js, and modern web applications.',
+  title: 'Cyrene Lopez - Creative Full-Stack Developer',
+  description: 'Professional portfolio of Cyrene Lopez, a creative full-stack developer specializing in React, Next.js, and modern web applications.',
   generator: 'v0.app',
   icons: {
     icon: [

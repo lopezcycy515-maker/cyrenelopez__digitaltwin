@@ -68,9 +68,9 @@ export async function POST(req: Request) {
 
     // Try models in order until one succeeds
     const MODELS = [
-      'mistralai/mistral-7b-instruct:free',
-      'meta-llama/llama-3.1-8b-instruct:free',
-      'google/gemma-3-1b-it:free',
+      'meta-llama/llama-3.3-70b-instruct:free',
+      'google/gemma-3-27b-it:free',
+      'nousresearch/hermes-3-llama-3.1-405b:free',
     ]
 
     let lastError = ''

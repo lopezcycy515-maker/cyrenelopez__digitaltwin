@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { portfolioData } from '@/lib/portfolio-data';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('persona');
+  const [activeSection, setActiveSection] = useState('about');
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +31,8 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isActive = (href) => {
+  const isActive = (href: string) => {
+    if (href.startsWith('/')) return pathname === href;
     const sectionId = href.replace('#', '');
     return sectionId === activeSection;
   };
@@ -38,7 +41,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-black/10 bg-white backdrop-blur-sm bg-white/95">
       <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          <a href="#persona" className="text-2xl font-bold text-black transition-opacity hover:opacity-70">
+          <a href="/" className="text-2xl font-bold text-black transition-opacity hover:opacity-70">
             {portfolioData.name}
           </a>
 
@@ -59,11 +62,6 @@ export function Header() {
                   </a>
                 </li>
               ))}
-              <li>
-                <button className="ml-4 rounded bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90">
-                  Sign in
-                </button>
-              </li>
             </ul>
           </nav>
 
@@ -98,11 +96,6 @@ export function Header() {
                   </a>
                 </li>
               ))}
-              <li className="pt-2">
-                <button className="w-full rounded bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90">
-                  Sign in
-                </button>
-              </li>
             </ul>
           </nav>
         )}

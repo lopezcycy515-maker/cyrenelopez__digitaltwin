@@ -5,7 +5,7 @@ export const portfolioData = {
   bio: "Passionate full-stack developer crafting beautiful and functional web experiences. Specialized in modern JavaScript frameworks and responsive design.",
   description: "I transform ideas into elegant digital solutions with clean code and user-centric design. Driven by curiosity and continuous learning.",
   navLinks: [
-    { label: "Persona", href: "#persona" },
+    { label: "Persona", href: "/persona" },
     { label: "About", href: "#about" },
     { label: "Skills", href: "#skills" },
     { label: "Projects", href: "#projects" },

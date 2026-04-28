@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import Link from 'next/link'
 
 interface Persona {
   id: number
@@ -10,16 +11,6 @@ interface Persona {
   email: string
 }
 
-const DEPT_COLORS: Record<string, string> = {
-  Music: 'from-pink-500 to-rose-400',
-  Entertainment: 'from-purple-500 to-fuchsia-400',
-  Showbiz: 'from-yellow-500 to-orange-400',
-  'Hip-Hop': 'from-emerald-500 to-teal-400',
-  Motorsport: 'from-blue-500 to-cyan-400',
-}
-
-const DEFAULT_GRADIENT = 'from-violet-500 to-indigo-400'
-
 function getInitials(name: string) {
   return name
     .split(' ')
@@ -27,10 +18,6 @@ function getInitials(name: string) {
     .join('')
     .toUpperCase()
     .slice(0, 2)
-}
-
-function getGradient(dept: string) {
-  return DEPT_COLORS[dept] ?? DEFAULT_GRADIENT
 }
 
 const emptyForm = { name: '', role: '', department: '', email: '' }
@@ -44,7 +31,6 @@ export default function PersonaPage() {
   const [saving, setSaving] = useState(false)
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const [search, setSearch] = useState('')
-  const [seeded, setSeeded] = useState(false)
   const [error, setError] = useState('')
 
   const fetchPersonas = useCallback(async () => {
@@ -52,7 +38,16 @@ export default function PersonaPage() {
     try {
       const res = await fetch('/api/persona')
       const data = await res.json()
-      setPersonas(Array.isArray(data) ? data : [])
+      const list: Persona[] = Array.isArray(data) ? data : []
+      setPersonas(list)
+      if (list.length === 0) {
+        const seed = await fetch('/api/persona/seed', { method: 'POST' })
+        if (seed.ok) {
+          const res2 = await fetch('/api/persona')
+          const data2 = await res2.json()
+          setPersonas(Array.isArray(data2) ? data2 : [])
+        }
+      }
     } catch {
       setError('Failed to load personas')
     } finally {
@@ -63,14 +58,6 @@ export default function PersonaPage() {
   useEffect(() => {
     fetchPersonas()
   }, [fetchPersonas])
-
-  async function handleSeed() {
-    const res = await fetch('/api/persona/seed', { method: 'POST' })
-    if (res.ok) {
-      setSeeded(true)
-      fetchPersonas()
-    }
-  }
 
   function openAdd() {
     setEditTarget(null)
@@ -130,154 +117,132 @@ export default function PersonaPage() {
   )
 
   return (
-    <div className="min-h-screen bg-[#0f0f13] text-white">
-      {/* Header */}
-      <div className="border-b border-white/10 bg-[#0f0f13]/80 backdrop-blur sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold tracking-tight">Persona Directory</h1>
-            <p className="text-xs text-white/40 mt-0.5">{personas.length} record{personas.length !== 1 ? 's' : ''} in database</p>
-          </div>
-          <div className="flex gap-2">
-            {!seeded && personas.length === 0 && (
-              <button
-                onClick={handleSeed}
-                className="text-xs px-3 py-2 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition"
-              >
-                Seed Data
-              </button>
-            )}
-            <button
-              onClick={openAdd}
-              className="text-sm px-4 py-2 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-violet-500 hover:to-indigo-400 font-medium transition shadow-lg shadow-violet-500/20"
-            >
-              + Add Persona
-            </button>
-          </div>
+    <div className="min-h-screen bg-white text-black">
+      {/* Top nav bar */}
+      <div className="sticky top-0 z-10 bg-white border-b border-black/10">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center gap-4">
+          <Link href="/" className="text-sm text-gray-500 hover:text-black transition flex items-center gap-1.5">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Portfolio
+          </Link>
+          <span className="text-black/20">|</span>
+          <h1 className="text-sm font-semibold text-black">Persona Directory</h1>
+          <span className="ml-auto text-xs text-gray-400">{personas.length} {personas.length === 1 ? 'person' : 'people'}</span>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-8">
-        {/* Search */}
-        <div className="relative mb-6">
-          <svg
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="flex items-end justify-between mb-8">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight">People</h2>
+            <p className="text-gray-500 text-sm mt-1">Manage and view all personas in the database.</p>
+          </div>
+          <button
+            onClick={openAdd}
+            className="flex items-center gap-2 bg-black text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-black/80 transition"
           >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Add Person
+          </button>
+        </div>
+
+        <div className="relative mb-6">
+          <svg className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name, role, department or email…"
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-sm placeholder:text-white/30 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40 transition"
+            placeholder="Search by name, role, department, or email..."
+            className="w-full border border-black/10 rounded-lg pl-11 pr-4 py-2.5 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 transition bg-gray-50"
           />
         </div>
 
-        {/* Table */}
         {loading ? (
           <div className="space-y-3">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-16 rounded-xl bg-white/5 animate-pulse" />
+              <div key={i} className="h-20 rounded-xl bg-gray-100 animate-pulse" />
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-24 text-white/30">
-            <div className="text-5xl mb-4">👤</div>
+          <div className="text-center py-24 text-gray-400">
+            <div className="text-5xl mb-4">??</div>
             <p className="text-sm">No personas found.</p>
-            {personas.length === 0 && (
-              <button onClick={handleSeed} className="mt-4 text-violet-400 underline text-sm hover:text-violet-300">
-                Seed sample data
-              </button>
-            )}
           </div>
         ) : (
-          <div className="space-y-2">
-            {filtered.map((p, i) => {
-              const gradient = getGradient(p.department)
-              return (
-                <div
-                  key={p.id}
-                  className="group flex items-center gap-4 bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.07] hover:border-white/20 rounded-xl px-5 py-4 transition-all"
-                  style={{ animationDelay: `${i * 40}ms` }}
-                >
-                  {/* Rank + Avatar */}
-                  <span className="text-white/20 text-xs font-mono w-5 text-center shrink-0">{i + 1}</span>
-                  <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-sm font-bold shrink-0 shadow-lg`}>
-                    {getInitials(p.name)}
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm truncate">{p.name}</p>
-                    <p className="text-xs text-white/40 truncate">{p.role}</p>
-                  </div>
-
-                  {/* Department badge */}
-                  <span className={`hidden sm:inline-flex items-center text-xs px-2.5 py-1 rounded-full bg-gradient-to-r ${gradient} bg-opacity-10 text-white font-medium shrink-0`}>
-                    {p.department}
-                  </span>
-
-                  {/* Email */}
-                  <span className="hidden md:block text-xs text-white/30 truncate max-w-[180px]">{p.email}</span>
-
-                  {/* Actions */}
-                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition shrink-0">
-                    <button
-                      onClick={() => openEdit(p)}
-                      className="p-2 rounded-lg hover:bg-white/10 text-white/50 hover:text-white transition"
-                      title="Edit"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={() => handleDelete(p.id)}
-                      disabled={deleteId === p.id}
-                      className="p-2 rounded-lg hover:bg-red-500/10 text-white/50 hover:text-red-400 transition"
-                      title="Delete"
-                    >
-                      {deleteId === p.id ? (
-                        <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                        </svg>
-                      ) : (
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                      )}
-                    </button>
-                  </div>
+          <div className="divide-y divide-black/[0.06] border border-black/[0.08] rounded-xl overflow-hidden">
+            {filtered.map((p, i) => (
+              <div
+                key={p.id}
+                className="group flex items-center gap-4 bg-white hover:bg-gray-50 px-5 py-4 transition-colors"
+              >
+                <span className="text-gray-300 text-xs font-mono w-5 text-right shrink-0 select-none">{i + 1}</span>
+                <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white text-sm font-bold shrink-0">
+                  {getInitials(p.name)}
                 </div>
-              )
-            })}
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-sm text-black truncate">{p.name}</p>
+                  <p className="text-xs text-gray-400 truncate">{p.role}</p>
+                </div>
+                <span className="hidden sm:inline-flex text-xs px-3 py-1 rounded-full border border-black/10 text-gray-600 bg-gray-50 font-medium shrink-0">
+                  {p.department}
+                </span>
+                <span className="hidden md:block text-xs text-gray-400 truncate max-w-[200px]">{p.email}</span>
+                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition shrink-0 ml-2">
+                  <button
+                    onClick={() => openEdit(p)}
+                    title="Edit"
+                    className="p-2 rounded-lg border border-black/10 hover:bg-black hover:text-white hover:border-black text-gray-400 transition"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    disabled={deleteId === p.id}
+                    title="Delete"
+                    className="p-2 rounded-lg border border-black/10 hover:bg-red-50 hover:text-red-500 hover:border-red-200 text-gray-400 transition disabled:opacity-40"
+                  >
+                    {deleteId === p.id ? (
+                      <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                      </svg>
+                    ) : (
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
 
-      {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-          <div className="w-full max-w-md bg-[#1a1a24] border border-white/10 rounded-2xl shadow-2xl p-6">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="font-bold text-lg">{editTarget ? 'Edit Persona' : 'New Persona'}</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+          <div className="w-full max-w-md bg-white border border-black/10 rounded-2xl shadow-2xl p-7">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-bold text-lg text-black">{editTarget ? 'Edit Person' : 'Add Person'}</h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-white/40 hover:text-white transition p-1"
+                className="text-gray-400 hover:text-black transition p-1 rounded-lg hover:bg-gray-100"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">{error}</p>
+                <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>
               )}
               {[
                 { key: 'name', label: 'Full Name', placeholder: 'e.g. Taylor Swift' },
@@ -286,32 +251,31 @@ export default function PersonaPage() {
                 { key: 'email', label: 'Email', placeholder: 'e.g. taylor@personas.io', type: 'email' },
               ].map(({ key, label, placeholder, type }) => (
                 <div key={key}>
-                  <label className="block text-xs text-white/50 mb-1.5 font-medium">{label}</label>
+                  <label className="block text-xs text-gray-500 mb-1.5 font-medium">{label}</label>
                   <input
                     type={type ?? 'text'}
                     value={form[key as keyof typeof form]}
                     onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
                     placeholder={placeholder}
                     required
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm placeholder:text-white/20 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40 transition"
+                    className="w-full border border-black/10 rounded-lg px-4 py-2.5 text-sm placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-black/10 transition bg-gray-50"
                   />
                 </div>
               ))}
-
-              <div className="flex gap-3 pt-1">
+              <div className="flex gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 py-2.5 rounded-xl border border-white/10 text-sm text-white/60 hover:text-white hover:border-white/30 transition"
+                  className="flex-1 py-2.5 rounded-lg border border-black/10 text-sm text-gray-600 hover:bg-gray-50 transition font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-violet-500 hover:to-indigo-400 text-sm font-medium transition disabled:opacity-50"
+                  className="flex-1 py-2.5 rounded-lg bg-black text-white text-sm font-medium hover:bg-black/80 transition disabled:opacity-50"
                 >
-                  {saving ? 'Saving…' : editTarget ? 'Save Changes' : 'Create'}
+                  {saving ? 'Saving...' : editTarget ? 'Save Changes' : 'Add Person'}
                 </button>
               </div>
             </form>

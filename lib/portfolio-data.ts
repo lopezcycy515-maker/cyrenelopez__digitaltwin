@@ -29,11 +29,13 @@ export const portfolioData = {
     "UI/UX Design",
     "REST APIs",
     "Git",
+    "MCP Server Development",
   ],
   projects: [
     { title: "E-Commerce Platform", description: "Modern shopping experience with React and Node.js" },
     { title: "Task Management App", description: "Collaborative tool built with Next.js" },
     { title: "Portfolio Website", description: "Personal brand showcase with responsive design" },
+    { title: "MCP Portfolio Server", description: "Model Context Protocol server exposing portfolio data as AI-queryable tools" },
   ],
   education: [
     { school: "Tech University", degree: "BS Information Technology", year: "2024" },

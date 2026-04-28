@@ -20,10 +20,18 @@ function getInitials(name: string) {
     .slice(0, 2)
 }
 
+const FALLBACK_PERSONAS: Persona[] = [
+  { id: 1, name: 'Taylor Swift', role: 'Singer-Songwriter', department: 'Music', email: 'taylor.swift@personas.io' },
+  { id: 2, name: 'Ariana Grande', role: 'Pop Artist', department: 'Entertainment', email: 'ariana.grande@personas.io' },
+  { id: 3, name: 'Sarah Geronimo', role: 'OPM Icon', department: 'Showbiz', email: 'sarah.geronimo@personas.io' },
+  { id: 4, name: 'Nicki Minaj', role: 'Rapper', department: 'Hip-Hop', email: 'nicki.minaj@personas.io' },
+  { id: 5, name: 'Max Verstappen', role: 'F1 World Champion', department: 'Motorsport', email: 'max.verstappen@personas.io' },
+]
+
 const emptyForm = { name: '', role: '', department: '', email: '' }
 
 export default function PersonaPage() {
-  const [personas, setPersonas] = useState<Persona[]>([])
+  const [personas, setPersonas] = useState<Persona[]>(FALLBACK_PERSONAS)
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [editTarget, setEditTarget] = useState<Persona | null>(null)
@@ -37,19 +45,25 @@ export default function PersonaPage() {
     setLoading(true)
     try {
       const res = await fetch('/api/persona')
+      if (!res.ok) throw new Error('API error')
       const data = await res.json()
       const list: Persona[] = Array.isArray(data) ? data : []
-      setPersonas(list)
       if (list.length === 0) {
         const seed = await fetch('/api/persona/seed', { method: 'POST' })
         if (seed.ok) {
           const res2 = await fetch('/api/persona')
           const data2 = await res2.json()
-          setPersonas(Array.isArray(data2) ? data2 : [])
+          const seeded: Persona[] = Array.isArray(data2) ? data2 : []
+          setPersonas(seeded.length > 0 ? seeded : FALLBACK_PERSONAS)
+        } else {
+          setPersonas(FALLBACK_PERSONAS)
         }
+      } else {
+        setPersonas(list)
       }
     } catch {
-      setError('Failed to load personas')
+      // DB not available locally — keep fallback data
+      setPersonas((prev) => (prev.length > 0 ? prev : FALLBACK_PERSONAS))
     } finally {
       setLoading(false)
     }
@@ -178,7 +192,7 @@ export default function PersonaPage() {
             {filtered.map((p, i) => (
               <div
                 key={p.id}
-                className="group flex items-center gap-4 bg-white hover:bg-gray-50 px-5 py-4 transition-colors"
+                className="flex items-center gap-4 bg-white hover:bg-gray-50 px-5 py-4 transition-colors"
               >
                 <span className="text-gray-300 text-xs font-mono w-5 text-right shrink-0 select-none">{i + 1}</span>
                 <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white text-sm font-bold shrink-0">
@@ -192,7 +206,7 @@ export default function PersonaPage() {
                   {p.department}
                 </span>
                 <span className="hidden md:block text-xs text-gray-400 truncate max-w-[200px]">{p.email}</span>
-                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition shrink-0 ml-2">
+                <div className="flex gap-1 shrink-0 ml-2">
                   <button
                     onClick={() => openEdit(p)}
                     title="Edit"

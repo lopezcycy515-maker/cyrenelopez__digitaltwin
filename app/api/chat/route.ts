@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
 
 const SYSTEM_PROMPT = `You are the Digital Twin of Cyrene Lopez — a creative full-stack developer. You speak as if you ARE Cyrene. Be confident, warm, and concise.
 
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     const { messages } = await req.json()
 
     if (!Array.isArray(messages) || messages.length === 0) {
-      return NextResponse.json({ error: 'Invalid messages' }, { status: 400 })
+      return NextResponse.json({ message: 'Invalid request.' }, { status: 400 })
     }
 
     const lastMessage = messages[messages.length - 1]?.content ?? ''
@@ -61,19 +61,24 @@ export async function POST(req: Request) {
       })
     }
 
+    const apiKey = process.env.OPENROUTER_API_KEY
+    if (!apiKey) {
+      return NextResponse.json({ message: "Chat is temporarily unavailable. Please try again later." }, { status: 500 })
+    }
+
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        'HTTP-Referer': 'https://cyrenelopez-digitaltwin.vercel.app',
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cyrenelopez-digitaltwin.vercel.app',
         'X-Title': 'Cyrene Lopez Digital Twin',
       },
       body: JSON.stringify({
-        model: 'openai/gpt-3.5-turbo',
+        model: 'meta-llama/llama-3.1-8b-instruct:free',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
-          ...messages.slice(-8), // keep last 8 messages for context
+          ...messages.slice(-8),
         ],
         max_tokens: 300,
         temperature: 0.7,
@@ -81,17 +86,17 @@ export async function POST(req: Request) {
     })
 
     if (!response.ok) {
-      const err = await response.text()
-      console.error('OpenRouter error:', err)
-      return NextResponse.json({ error: 'AI service error' }, { status: 500 })
+      const errText = await response.text()
+      console.error('OpenRouter error:', response.status, errText)
+      return NextResponse.json({ message: "I'm having trouble connecting right now. Try again in a moment!" }, { status: 500 })
     }
 
     const data = await response.json()
-    const message = data.choices?.[0]?.message?.content ?? "Sorry, I couldn't process that. Try again!"
+    const message = data.choices?.[0]?.message?.content?.trim() ?? "Sorry, I couldn't process that. Try again!"
 
     return NextResponse.json({ message })
   } catch (err) {
-    console.error(err)
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    console.error('Chat API error:', err)
+    return NextResponse.json({ message: "Something went wrong on my end. Please try again!" }, { status: 500 })
   }
 }

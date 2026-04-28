@@ -9,7 +9,7 @@ export function AboutSection() {
         <div className="space-y-12">
           <div>
             <h2 className="text-4xl font-bold text-pink-700 mb-6">About Me</h2>
-            <div className="space-y-6 text-pink-700/70">
+            <div className="space-y-6 text-gray-600">
               <p className="text-lg leading-relaxed">
                 {portfolioData.bio}
               </p>
@@ -31,19 +31,19 @@ export function AboutSection() {
               <ul className="space-y-3">
                 <li className="flex gap-3">
                   <span className="text-pink-700 font-bold">•</span>
-                  <span className="text-pink-700/70">Full-stack web application development</span>
+                  <span className="text-gray-600">Full-stack web application development</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-pink-700 font-bold">•</span>
-                  <span className="text-pink-700/70">User experience and interface design</span>
+                  <span className="text-gray-600">User experience and interface design</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-pink-700 font-bold">•</span>
-                  <span className="text-pink-700/70">Performance optimization and scalability</span>
+                  <span className="text-gray-600">Performance optimization and scalability</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-pink-700 font-bold">•</span>
-                  <span className="text-pink-700/70">Technical mentoring and knowledge sharing</span>
+                  <span className="text-gray-600">Technical mentoring and knowledge sharing</span>
                 </li>
               </ul>
             </div>
@@ -53,19 +53,19 @@ export function AboutSection() {
               <ul className="space-y-3">
                 <li className="flex gap-3">
                   <span className="text-pink-700 font-bold">•</span>
-                  <span className="text-pink-700/70">User-centric design philosophy</span>
+                  <span className="text-gray-600">User-centric design philosophy</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-pink-700 font-bold">•</span>
-                  <span className="text-pink-700/70">Clean, maintainable, and documented code</span>
+                  <span className="text-gray-600">Clean, maintainable, and documented code</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-pink-700 font-bold">•</span>
-                  <span className="text-pink-700/70">Agile development methodologies</span>
+                  <span className="text-gray-600">Agile development methodologies</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-pink-700 font-bold">•</span>
-                  <span className="text-pink-700/70">Collaborative problem-solving</span>
+                  <span className="text-gray-600">Collaborative problem-solving</span>
                 </li>
               </ul>
             </div>

@@ -21,12 +21,12 @@ export function EducationSection() {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-lg font-bold text-pink-700">{edu.school}</h3>
-                  <p className="mt-1 text-pink-700/70">{edu.program || edu.degree}</p>
+                  <p className="mt-1 text-gray-600">{edu.program || edu.degree}</p>
                 </div>
-                <span className="text-sm font-medium text-pink-700/60">{edu.year}</span>
+                <span className="text-sm font-medium text-gray-500">{edu.year}</span>
               </div>
               {expandedIndex === index && (
-                <div className="mt-4 border-t border-pink-700/10 pt-4 text-sm text-pink-700/60">
+                <div className="mt-4 border-t border-pink-700/10 pt-4 text-sm text-gray-500">
                   <p>Click to close</p>
                 </div>
               )}

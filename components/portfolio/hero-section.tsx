@@ -12,18 +12,17 @@ export function HeroSection() {
           {/* Content */}
           <div className="space-y-10">
             <div className="space-y-3">
-              <p className="text-sm font-semibold tracking-wider text-pink-700/60 uppercase">
+              <p className="text-sm font-semibold tracking-wider text-gray-500 uppercase">
                 {portfolioData.status}
               </p>
               <h2 className="text-5xl font-bold text-pink-700 lg:text-6xl">
                 {portfolioData.name}
               </h2>
-              <p className="text-lg font-medium text-pink-700/70">
-                {portfolioData.title}
+              <p className="text-lg font-medium text-gray-600">{portfolioData.title}
               </p>
             </div>
 
-            <div className="space-y-4 text-pink-700/70">
+            <div className="space-y-4 text-gray-600">
               <p className="text-base leading-relaxed">
                 {portfolioData.bio}
               </p>

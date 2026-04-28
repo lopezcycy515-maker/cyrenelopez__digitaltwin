@@ -22,7 +22,7 @@ export function GoalsSection() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-pink-700 text-sm font-bold text-white">
                   {index + 1}
                 </span>
-                <p className="text-pink-700 font-medium">{goal}</p>
+                <p className="text-gray-800 font-medium">{goal}</p>
               </div>
             </button>
           ))}

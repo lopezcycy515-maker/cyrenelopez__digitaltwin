@@ -13,7 +13,7 @@ export function SkillsSection() {
               key={index}
               className="rounded-lg border border-pink-700/10 bg-white px-6 py-4 transition-all hover:shadow-md hover:border-pink-700/20"
             >
-              <p className="font-medium text-pink-700">{skill}</p>
+              <p className="font-medium text-gray-800">{skill}</p>
             </div>
           ))}
         </div>

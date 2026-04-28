@@ -21,11 +21,11 @@ export function ProjectsSection() {
               <h3 className="text-xl font-bold text-pink-700 group-hover:text-pink-700/80">
                 {project.title}
               </h3>
-              <p className="mt-2 text-pink-700/60">
+              <p className="mt-2 text-gray-500">
                 {project.description}
               </p>
               {selectedProject === index && (
-                <div className="mt-4 text-sm text-pink-700/70">
+                <div className="mt-4 text-sm text-gray-500">
                   <p>Click to close details</p>
                 </div>
               )}

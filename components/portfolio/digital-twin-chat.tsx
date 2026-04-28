@@ -94,7 +94,7 @@ export function DigitalTwinChat() {
               CL
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-pink-700 tracking-wide uppercase">Digital Twin — Cy</p>
+              <p className="text-xs font-bold text-gray-900 tracking-wide uppercase">Digital Twin — Cy</p>
               <span className="inline-flex items-center gap-1 text-[10px] text-green-600 font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
                 Online
@@ -102,7 +102,7 @@ export function DigitalTwinChat() {
             </div>
             <button
               onClick={() => setOpen(false)}
-              className="text-gray-400 hover:text-pink-700 transition p-1"
+              className="text-gray-400 hover:text-gray-600 transition p-1"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -118,7 +118,7 @@ export function DigitalTwinChat() {
                   className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                     m.role === 'user'
                       ? 'bg-pink-700 text-white rounded-br-sm'
-                      : 'bg-white border border-pink-700/10 text-pink-700 rounded-bl-sm shadow-sm'
+                      : 'bg-white border border-gray-200 text-gray-700 rounded-bl-sm shadow-sm'
                   }`}
                 >
                   {m.content}
@@ -128,7 +128,7 @@ export function DigitalTwinChat() {
 
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-white border border-pink-700/10 rounded-2xl rounded-bl-sm px-4 py-2.5 shadow-sm">
+                <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-sm px-4 py-2.5 shadow-sm">
                   <div className="flex gap-1 items-center">
                     <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0ms]" />
                     <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]" />
@@ -149,7 +149,7 @@ export function DigitalTwinChat() {
                   <button
                     key={q}
                     onClick={() => send(q)}
-                    className="text-xs px-3 py-1.5 rounded-full border border-pink-700/10 bg-white text-gray-600 hover:bg-pink-700 hover:text-white hover:border-pink-700 transition"
+                    className="text-xs px-3 py-1.5 rounded-full border border-gray-200 bg-white text-gray-600 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-300 transition"
                   >
                     {q}
                   </button>

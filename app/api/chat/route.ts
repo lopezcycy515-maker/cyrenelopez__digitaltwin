@@ -63,38 +63,48 @@ export async function POST(req: Request) {
 
     const apiKey = process.env.OPENROUTER_API_KEY
     if (!apiKey) {
-      return NextResponse.json({ message: "Chat is temporarily unavailable. Please try again later." }, { status: 500 })
+      return NextResponse.json({ message: "Chat is temporarily unavailable — API key not configured." }, { status: 500 })
     }
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL ?? 'https://cyrenelopez-digitaltwin.vercel.app',
-        'X-Title': 'Cyrene Lopez Digital Twin',
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/llama-3.1-8b-instruct:free',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          ...messages.slice(-8),
-        ],
-        max_tokens: 300,
-        temperature: 0.7,
-      }),
-    })
+    // Try models in order until one succeeds
+    const MODELS = [
+      'mistralai/mistral-7b-instruct:free',
+      'meta-llama/llama-3.1-8b-instruct:free',
+      'google/gemma-3-1b-it:free',
+    ]
 
-    if (!response.ok) {
-      const errText = await response.text()
-      console.error('OpenRouter error:', response.status, errText)
-      return NextResponse.json({ message: "I'm having trouble connecting right now. Try again in a moment!" }, { status: 500 })
+    let lastError = ''
+    for (const model of MODELS) {
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+          'X-Title': 'Cyrene Lopez Digital Twin',
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...messages.slice(-8),
+          ],
+          max_tokens: 300,
+          temperature: 0.7,
+        }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const message = data.choices?.[0]?.message?.content?.trim()
+        if (message) return NextResponse.json({ message })
+      } else {
+        lastError = `${response.status}: ${await response.text()}`
+        console.error(`Model ${model} failed:`, lastError)
+      }
     }
 
-    const data = await response.json()
-    const message = data.choices?.[0]?.message?.content?.trim() ?? "Sorry, I couldn't process that. Try again!"
-
-    return NextResponse.json({ message })
+    console.error('All models failed. Last error:', lastError)
+    return NextResponse.json({ message: "I'm having trouble right now. Please try again shortly!" }, { status: 500 })
   } catch (err) {
     console.error('Chat API error:', err)
     return NextResponse.json({ message: "Something went wrong on my end. Please try again!" }, { status: 500 })

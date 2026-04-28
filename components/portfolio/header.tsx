@@ -38,10 +38,10 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/10 bg-white backdrop-blur-sm bg-white/95">
+    <header className="sticky top-0 z-50 border-b border-pink-700/10 bg-white backdrop-blur-sm bg-white/95">
       <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          <a href="/" className="text-2xl font-bold text-black transition-opacity hover:opacity-70">
+          <a href="/" className="text-2xl font-bold text-pink-700 transition-opacity hover:opacity-70">
             {portfolioData.name}
           </a>
 
@@ -54,8 +54,8 @@ export function Header() {
                     href={link.href}
                     className={`px-4 py-2 text-sm font-medium transition-all ${
                       isActive(link.href)
-                        ? 'border-b-2 border-black text-black'
-                        : 'text-gray-600 hover:text-black'
+                        ? 'border-b-2 border-pink-700 text-pink-700'
+                        : 'text-gray-600 hover:text-pink-700'
                     }`}
                   >
                     {link.label}
@@ -71,15 +71,15 @@ export function Header() {
             className="md:hidden flex flex-col gap-1.5 p-2"
             aria-label="Toggle menu"
           >
-            <span className={`block h-0.5 w-6 bg-black transition-all ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`block h-0.5 w-6 bg-black transition-all ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-            <span className={`block h-0.5 w-6 bg-black transition-all ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+            <span className={`block h-0.5 w-6 bg-pink-700 transition-all ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`block h-0.5 w-6 bg-pink-700 transition-all ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+            <span className={`block h-0.5 w-6 bg-pink-700 transition-all ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
           </button>
         </div>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <nav className="md:hidden mt-4 border-t border-black/10 pt-4">
+          <nav className="md:hidden mt-4 border-t border-pink-700/10 pt-4">
             <ul className="flex flex-col gap-2">
               {portfolioData.navLinks.map((link) => (
                 <li key={link.label}>
@@ -88,8 +88,8 @@ export function Header() {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`block px-4 py-2 text-sm font-medium transition-all ${
                       isActive(link.href)
-                        ? 'border-l-2 border-black bg-black/5 text-black'
-                        : 'text-gray-600 hover:text-black hover:bg-black/5'
+                        ? 'border-l-2 border-pink-700 bg-pink-700/5 text-pink-700'
+                        : 'text-gray-600 hover:text-pink-700 hover:bg-pink-700/5'
                     }`}
                   >
                     {link.label}

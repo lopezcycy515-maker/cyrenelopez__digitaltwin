@@ -6,24 +6,24 @@ import { SocialLinks } from './social-links';
 
 export function HeroSection() {
   return (
-    <section id="persona" className="border-b border-black/10 bg-white">
+    <section id="persona" className="border-b border-pink-700/10 bg-white">
       <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="space-y-10">
           {/* Content */}
           <div className="space-y-10">
             <div className="space-y-3">
-              <p className="text-sm font-semibold tracking-wider text-black/60 uppercase">
+              <p className="text-sm font-semibold tracking-wider text-pink-700/60 uppercase">
                 {portfolioData.status}
               </p>
-              <h2 className="text-5xl font-bold text-black lg:text-6xl">
+              <h2 className="text-5xl font-bold text-pink-700 lg:text-6xl">
                 {portfolioData.name}
               </h2>
-              <p className="text-lg font-medium text-black/70">
+              <p className="text-lg font-medium text-pink-700/70">
                 {portfolioData.title}
               </p>
             </div>
 
-            <div className="space-y-4 text-black/70">
+            <div className="space-y-4 text-pink-700/70">
               <p className="text-base leading-relaxed">
                 {portfolioData.bio}
               </p>

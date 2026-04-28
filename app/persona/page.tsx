@@ -131,18 +131,18 @@ export default function PersonaPage() {
   )
 
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-white text-pink-700">
       {/* Top nav bar */}
-      <div className="sticky top-0 z-10 bg-white border-b border-black/10">
+      <div className="sticky top-0 z-10 bg-white border-b border-pink-700/10">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center gap-4">
-          <Link href="/" className="text-sm text-gray-500 hover:text-black transition flex items-center gap-1.5">
+          <Link href="/" className="text-sm text-gray-500 hover:text-pink-700 transition flex items-center gap-1.5">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Back to Portfolio
           </Link>
-          <span className="text-black/20">|</span>
-          <h1 className="text-sm font-semibold text-black">Persona Directory</h1>
+          <span className="text-pink-700/20">|</span>
+          <h1 className="text-sm font-semibold text-pink-700">Persona Directory</h1>
           <span className="ml-auto text-xs text-gray-400">{personas.length} {personas.length === 1 ? 'person' : 'people'}</span>
         </div>
       </div>
@@ -155,7 +155,7 @@ export default function PersonaPage() {
           </div>
           <button
             onClick={openAdd}
-            className="flex items-center gap-2 bg-black text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-black/80 transition"
+            className="flex items-center gap-2 bg-pink-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-pink-700/80 transition"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -172,7 +172,7 @@ export default function PersonaPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, role, department, or email..."
-            className="w-full border border-black/10 rounded-lg pl-11 pr-4 py-2.5 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 transition bg-gray-50"
+            className="w-full border border-pink-700/10 rounded-lg pl-11 pr-4 py-2.5 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-700/10 transition bg-gray-50"
           />
         </div>
 
@@ -188,21 +188,21 @@ export default function PersonaPage() {
             <p className="text-sm">No personas found.</p>
           </div>
         ) : (
-          <div className="divide-y divide-black/[0.06] border border-black/[0.08] rounded-xl overflow-hidden">
+          <div className="divide-y divide-black/[0.06] border border-pink-700/[0.08] rounded-xl overflow-hidden">
             {filtered.map((p, i) => (
               <div
                 key={p.id}
                 className="flex items-center gap-4 bg-white hover:bg-gray-50 px-5 py-4 transition-colors"
               >
                 <span className="text-gray-300 text-xs font-mono w-5 text-right shrink-0 select-none">{i + 1}</span>
-                <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white text-sm font-bold shrink-0">
+                <div className="w-10 h-10 rounded-full bg-pink-700 flex items-center justify-center text-white text-sm font-bold shrink-0">
                   {getInitials(p.name)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-sm text-black truncate">{p.name}</p>
+                  <p className="font-semibold text-sm text-pink-700 truncate">{p.name}</p>
                   <p className="text-xs text-gray-400 truncate">{p.role}</p>
                 </div>
-                <span className="hidden sm:inline-flex text-xs px-3 py-1 rounded-full border border-black/10 text-gray-600 bg-gray-50 font-medium shrink-0">
+                <span className="hidden sm:inline-flex text-xs px-3 py-1 rounded-full border border-pink-700/10 text-gray-600 bg-gray-50 font-medium shrink-0">
                   {p.department}
                 </span>
                 <span className="hidden md:block text-xs text-gray-400 truncate max-w-[200px]">{p.email}</span>
@@ -210,7 +210,7 @@ export default function PersonaPage() {
                   <button
                     onClick={() => openEdit(p)}
                     title="Edit"
-                    className="p-2 rounded-lg border border-black/10 hover:bg-black hover:text-white hover:border-black text-gray-400 transition"
+                    className="p-2 rounded-lg border border-pink-700/10 hover:bg-pink-700 hover:text-white hover:border-pink-700 text-gray-400 transition"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -220,7 +220,7 @@ export default function PersonaPage() {
                     onClick={() => handleDelete(p.id)}
                     disabled={deleteId === p.id}
                     title="Delete"
-                    className="p-2 rounded-lg border border-black/10 hover:bg-red-50 hover:text-red-500 hover:border-red-200 text-gray-400 transition disabled:opacity-40"
+                    className="p-2 rounded-lg border border-pink-700/10 hover:bg-red-50 hover:text-red-500 hover:border-red-200 text-gray-400 transition disabled:opacity-40"
                   >
                     {deleteId === p.id ? (
                       <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -241,13 +241,13 @@ export default function PersonaPage() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-          <div className="w-full max-w-md bg-white border border-black/10 rounded-2xl shadow-2xl p-7">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-pink-700/40 backdrop-blur-sm px-4">
+          <div className="w-full max-w-md bg-white border border-pink-700/10 rounded-2xl shadow-2xl p-7">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-bold text-lg text-black">{editTarget ? 'Edit Person' : 'Add Person'}</h2>
+              <h2 className="font-bold text-lg text-pink-700">{editTarget ? 'Edit Person' : 'Add Person'}</h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-gray-400 hover:text-black transition p-1 rounded-lg hover:bg-gray-100"
+                className="text-gray-400 hover:text-pink-700 transition p-1 rounded-lg hover:bg-gray-100"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -272,7 +272,7 @@ export default function PersonaPage() {
                     onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
                     placeholder={placeholder}
                     required
-                    className="w-full border border-black/10 rounded-lg px-4 py-2.5 text-sm placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-black/10 transition bg-gray-50"
+                    className="w-full border border-pink-700/10 rounded-lg px-4 py-2.5 text-sm placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-700/10 transition bg-gray-50"
                   />
                 </div>
               ))}
@@ -280,14 +280,14 @@ export default function PersonaPage() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 py-2.5 rounded-lg border border-black/10 text-sm text-gray-600 hover:bg-gray-50 transition font-medium"
+                  className="flex-1 py-2.5 rounded-lg border border-pink-700/10 text-sm text-gray-600 hover:bg-gray-50 transition font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 py-2.5 rounded-lg bg-black text-white text-sm font-medium hover:bg-black/80 transition disabled:opacity-50"
+                  className="flex-1 py-2.5 rounded-lg bg-pink-700 text-white text-sm font-medium hover:bg-pink-700/80 transition disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : editTarget ? 'Save Changes' : 'Add Person'}
                 </button>

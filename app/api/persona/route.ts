@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server'
-import { sql, initDB } from '@/lib/db'
+import { getSql, initDB } from '@/lib/db'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
     await initDB()
+    const sql = getSql()
     const personas = await sql`SELECT * FROM personas ORDER BY created_at DESC`
     return NextResponse.json(personas)
   } catch (error) {
@@ -15,6 +18,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await initDB()
+    const sql = getSql()
     const { name, role, department, email } = await request.json()
 
     if (!name || !role || !department || !email) {

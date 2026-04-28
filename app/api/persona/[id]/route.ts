@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server'
-import { sql } from '@/lib/db'
+import { getSql } from '@/lib/db'
+
+export const dynamic = 'force-dynamic'
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const sql = getSql()
     const { id } = await params
     const { name, role, department, email } = await request.json()
 
@@ -28,6 +31,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const sql = getSql()
     const { id } = await params
     const result = await sql`
       DELETE FROM personas WHERE id = ${id} RETURNING *

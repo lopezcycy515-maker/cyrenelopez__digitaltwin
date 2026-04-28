@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
-import { sql, initDB } from '@/lib/db'
+import { getSql, initDB } from '@/lib/db'
+
+export const dynamic = 'force-dynamic'
 
 const seedData = [
   { name: 'Taylor Swift', role: 'Singer-Songwriter', department: 'Music', email: 'taylor.swift@personas.io' },
@@ -12,6 +14,7 @@ const seedData = [
 export async function POST() {
   try {
     await initDB()
+    const sql = getSql()
 
     for (const person of seedData) {
       await sql`

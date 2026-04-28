@@ -7,6 +7,7 @@ import { EducationSection } from '@/components/portfolio/education-section';
 import { GoalsSection } from '@/components/portfolio/goals-section';
 import { ContactSection } from '@/components/portfolio/contact-section';
 import { Footer } from '@/components/portfolio/footer';
+import { DigitalTwinChat } from '@/components/portfolio/digital-twin-chat';
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
         <ContactSection />
       </main>
       <Footer />
+      <DigitalTwinChat />
     </>
   );
 }
